@@ -3,8 +3,6 @@
 ## 1. User Flow
  
 ### Fluxo 01 — Monitoramento, Metas e Alertas
-
-Objetivo do usuário:
  
 **Objetivo do usuário:**
 
@@ -17,7 +15,7 @@ Usuário
  
 **Histórias de Usuário relacionadas:**
 - HU01 Exibição de Tempo: O usuário visualizará o tempo acumulado do dia para ter clareza sobre o consumo total.
-- HU02 Configuração de Limites e Alerta: O usuário quer cadastrar o limite diário e receber um alerta visual ao atingi-lo para gerenciar seu tempo.
+- HU02 Configuração de Limites: O usuário cadastra o limite diário.
  
 **Diagrama:**
 
@@ -29,12 +27,7 @@ graph TD
     
     ActionChoice -- Sim --> InputLimit[Inserir ou Alterar Limite Diário em Horas]
     InputLimit --> SaveLimit[Salvar Limite]
-    SaveLimit --> CheckLimit
-    
-    CheckLimit -- Sim --> TriggerAlert[Disparar Notificação]
-    TriggerAlert --> End([Navegação Continua])
-    
-    CheckLimit -- Não --> End
+
     
 **### Fluxo 02 - Análise de Desempenho e Saúde Digital**
 
@@ -48,17 +41,20 @@ Analisar gráficos semanais de consumo de internet para identificar padrões de 
 Usuário
  
 **Histórias de Usuário relacionadas:**
-- HU02 Alerta: O usuário recebe um alerta visual ao atingir o tempo definido.
+- HU02 Alerta: O usuário recebe um alerta visual ao atingir o tempo definido anteriormente.
 - HU03 Histórico e Relatórios Comparativos: Exibir gráfico dos últimos 7 dias.
 - HU04 Sugestão de Desconexão: Apresentar dicas de atividades offline no momento do alerta de limite.
-- 
+   
 **Diagrama:**
-  graph TD
-    StartAlert([Notificação de Limite Atingido]) --> DisplayTip[Dica Prática de Atividade Offline]
-    DisplayTip --> UserOption{Deseja ver histórico?}
-    UserOption -- Sim --> NavReports[Navegar para Tela de Histórico]
-    UserOption -- Não --> End([Encerrar ou Continuar])
-    
-    NavReports --> LoadChart[Carregar Gráfico de Consumo dos Últimos 7 Dias]
-    LoadChart --> ShowStats[Exibir Comparativo]
+ flowchart TB
+    SaveLimit["SaveLimit"] --> CheckLimit["CheckLimit"]
+    CheckLimit -- Sim --> TriggerAlert["Disparar Notificação"]
+    StartAlert(["Notificação de Limite Atingido"]) --> DisplayTip["Dica Prática de Atividade Offline"]
+    DisplayTip --> UserOption{"Deseja ver histórico?"}
+    UserOption -- Sim --> NavReports["Navegar para Tela de Histórico"]
+    UserOption -- Não --> End(["Encerrar ou Continuar"])
+    NavReports --> LoadChart["Carregar Gráfico de Consumo dos Últimos 7 Dias"]
+    LoadChart --> ShowStats["Exibir Comparativo"]
     ShowStats --> End
+    CheckLimit -- Não --> End
+    TriggerAlert --> StartAlert
